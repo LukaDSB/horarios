@@ -1,88 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Inventário da Planilha</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
-    .row-header {
-      background-color: #f9f9f9;
-      text-align: center;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Rotas de Ônibus</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Inventário da Planilha</h1>
-  <div id="mensagem">Carregando dados...</div>
-  <table id="excelTable"></table>
+    <div class="container">
+        <h1>Busca de Rotas de Ônibus</h1>
 
-  <script>
-    async function carregarPlanilhaCSV() {
-      const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlFRpBHlrOcNxYjeM8dAnA-WdSRal1gRQIvplcWayT0XbhYlUzJKak0OXPJkMhtvkYbc5xV4OLW1tB/pub?gid=0&single=true&output=csv";
+        <div class="search-section">
+            <label for="route-select">Selecione a Rota:</label>
+            <select id="route-select">
+                <option value="">Carregando rotas...</option>
+            </select>
+        </div>
 
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Erro ao baixar CSV");
+        <div class="schedule-section">
+            <h2>Horários da Rota: <span id="selected-route-name"></span></h2>
+            <div id="schedule-display">
+                <p>Selecione uma rota para ver os horários.</p>
+            </div>
+        </div>
+    </div>
 
-        const texto = await response.text();
-        const linhas = texto.trim().split("\n").map(l => l.split(","));
-        const tabela = document.getElementById("excelTable");
-        document.getElementById("mensagem").style.display = "none";
-
-        const maxCols = Math.max(...linhas.map(l => l.length));
-
-        // Cabeçalho com A, B, C...
-        const headerRow = tabela.insertRow();
-        const canto = document.createElement("th");
-        canto.textContent = "";
-        headerRow.appendChild(canto);
-
-        for (let i = 0; i < maxCols; i++) {
-          const th = document.createElement("th");
-          th.textContent = String.fromCharCode(65 + i); // A, B, C...
-          headerRow.appendChild(th);
-        }
-
-        // Linhas com número + dados
-        linhas.forEach((linha, i) => {
-          const row = tabela.insertRow();
-          const th = document.createElement("th");
-          th.textContent = i + 1;
-          th.className = "row-header";
-          row.appendChild(th);
-
-          for (let j = 0; j < maxCols; j++) {
-            const td = row.insertCell();
-            td.textContent = linha[j] || "";
-          }
-        });
-
-      } catch (erro) {
-        document.getElementById("mensagem").textContent = "Erro ao carregar os dados da planilha.";
-        console.error(erro);
-      }
-    }
-
-    carregarPlanilhaCSV();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
