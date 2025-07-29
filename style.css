@@ -40,15 +40,9 @@ body {
 }
 
 .navbar-logo img {
-    height: 40px;
+    height: 4vh;
     filter: brightness(0) invert(1);
 }
-
-.navbar-logo svg {
-    height: 40px;
-    fill: white;
-}
-
 
 .hamburger-menu {
     display: none;
@@ -370,4 +364,10 @@ label {
     background-color: #e2f0fb !important;
     font-weight: bold;
     color: #0056b3;
+}
+
+@media (max-width: 530px) {
+.navbar-logo img {
+    height: 3vh;
+}
 }
